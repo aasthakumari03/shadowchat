@@ -15,13 +15,14 @@ async function createSession() {
   const data = await res.json();
 
   currentSession = data.sessionId;
-  document.getElementById('sessionId').innerText = 'Code: ' + currentSession;
+  document.getElementById('sessionId').innerText = 'SESSION CODE: ' + currentSession;
 
   startChat();
 }
 
 async function joinSession() {
-  const sessionId = document.getElementById('sessionInput').value;
+  const sessionId = document.getElementById('sessionInput').value.trim().toUpperCase();
+  if (!sessionId) return alert('Please enter a session code');
 
   const res = await fetch('http://localhost:5000/join-session', {
     method: 'POST',
@@ -41,44 +42,71 @@ async function joinSession() {
 
 function startChat() {
   document.getElementById('chat').style.display = 'block';
+  document.getElementById('sessionId').scrollIntoView({ behavior: 'smooth' });
   socket.emit('join-session', currentSession);
 }
 
 function sendMessage() {
-  const msg = document.getElementById('msg').value;
+  const msgInput = document.getElementById('msg');
+  const msg = msgInput.value.trim();
+  if (!msg) return;
 
   socket.emit('send-message', {
     sessionId: currentSession,
     message: msg
   });
 
-  addMessage('You: ' + msg);
+  addMessage('You', msg, 'sent');
+  msgInput.value = '';
 }
 
 socket.on('receive-message', (msg) => {
-  addMessage('Stranger: ' + msg);
+  addMessage('Stranger', msg, 'received');
 });
 
-function addMessage(msg) {
+function addMessage(sender, text, type) {
+  const messagesDiv = document.getElementById('messages');
   const div = document.createElement('div');
-  div.innerText = msg;
-  document.getElementById('messages').appendChild(div);
+  div.style.marginBottom = '12px';
+  div.style.display = 'flex';
+  div.style.flexDirection = 'column';
+  div.style.alignItems = type === 'sent' ? 'flex-end' : 'flex-start';
+
+  const senderSpan = document.createElement('span');
+  senderSpan.innerText = sender;
+  senderSpan.style.fontSize = '0.7rem';
+  senderSpan.style.color = 'var(--text-muted)';
+  senderSpan.style.marginBottom = '4px';
+  senderSpan.style.textTransform = 'uppercase';
+  senderSpan.style.letterSpacing = '1px';
+
+  const textDiv = document.createElement('div');
+  textDiv.innerText = text;
+  textDiv.style.background = type === 'sent' ? 'var(--primary)' : 'rgba(255,255,255,0.05)';
+  textDiv.style.color = '#fff';
+  textDiv.style.padding = '8px 16px';
+  textDiv.style.borderRadius = '12px';
+  textDiv.style.fontSize = '0.95rem';
+  textDiv.style.maxWidth = '80%';
+  textDiv.style.border = type === 'sent' ? 'none' : '1px solid var(--glass-border)';
+
+  div.appendChild(senderSpan);
+  div.appendChild(textDiv);
+  messagesDiv.appendChild(div);
+  
+  // Scroll to bottom
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 async function endSession() {
-  await fetch('http://localhost:5000/end-session', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sessionId: currentSession })
-  });
-
-  location.reload();
-}
-
-function showApp() {
-  document.getElementById('mainCard').style.display = 'block';
-  document.getElementById('getStartedBtn').style.display = 'none';
-  document.querySelector('.brand-tagline').style.display = 'none';
+  if (confirm('Are you sure you want to end this session? All messages will be lost.')) {
+    await fetch('http://localhost:5000/end-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId: currentSession })
+    });
+    location.reload();
+  }
 }
 
 // Spotlight cursor tracking
