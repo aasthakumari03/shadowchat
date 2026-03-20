@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ShadowChat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white h-screen flex items-center justify-center">
+
+  <!-- Main Card -->
+  <div class="bg-gray-900 p-6 rounded-2xl shadow-xl w-96 relative">
+
+    <!-- Top Icon -->
+    <button onclick="toggleQR()" class="absolute top-3 right-3 text-white text-xl hover:scale-110 transition">
+      ⚡
+    </button>
+
+    <h2 class="text-xl font-bold mb-4 text-center">ShadowChat</h2>
+
+    <button onclick="createSession()" class="w-full bg-blue-600 p-2 rounded mb-3">Create Session</button>
+
+    <input id="sessionInput" placeholder="Enter Code" class="w-full p-2 rounded text-black mb-2" />
+    <button onclick="joinSession()" class="w-full bg-green-600 p-2 rounded">Join</button>
+
+    <h3 id="sessionId" class="mt-3 text-center"></h3>
+
+    <!-- Chat -->
+    <div id="chat" class="hidden mt-4">
+      <div class="h-40 overflow-y-auto bg-gray-800 p-2 rounded" id="messages"></div>
+
+      <input id="msg" placeholder="Type message" class="w-full p-2 rounded text-black mt-2" />
+
+      <div class="flex gap-2 mt-2">
+        <button onclick="sendMessage()" class="flex-1 bg-blue-600 p-2 rounded">Send</button>
+        <button onclick="endSession()" class="flex-1 bg-red-600 p-2 rounded">End</button>
+      </div>
+    </div>
+
+    <!-- QR Popup -->
+    <div id="qrBox" class="hidden absolute inset-0 bg-black bg-opacity-80 flex items-center justify-center">
+      <div class="bg-gray-800 p-6 rounded-xl shadow-2xl border border-blue-500 animate-pulse">
+        <p class="text-center mb-2">QR Code</p>
+        <div class="w-40 h-40 bg-white flex items-center justify-center text-black">
+          QR
+        </div>
+        <button onclick="toggleQR()" class="mt-3 w-full bg-red-500 p-2 rounded">Close</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
