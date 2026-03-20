@@ -6,6 +6,7 @@ const { Server } = require('socket.io');
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static('frontend'));
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -41,5 +42,7 @@ app.post('/end-session', (req, res) => {
   delete sessions[sessionId];
   res.json({ success: true });
 });
-
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/../frontend/index.html');
+});
 server.listen(5000, () => console.log('Server running on port 5000'));
