@@ -3,7 +3,11 @@ let currentSession = null;
 
 function toggleQR() {
   const box = document.getElementById('qrBox');
-  box.classList.toggle('hidden');
+  if (box.style.display === 'none' || box.style.display === '') {
+    box.style.display = 'flex';
+  } else {
+    box.style.display = 'none';
+  }
 }
 
 async function createSession() {
@@ -36,7 +40,7 @@ async function joinSession() {
 }
 
 function startChat() {
-  document.getElementById('chat').classList.remove('hidden');
+  document.getElementById('chat').style.display = 'block';
   socket.emit('join-session', currentSession);
 }
 

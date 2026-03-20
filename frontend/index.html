@@ -1,54 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>ShadowChat</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowChat | Secure Anonymous Messaging</title>
+    <link rel="stylesheet" href="index.css">
 </head>
-<body class="bg-black text-white h-screen flex items-center justify-center">
+<body>
 
-  <!-- Main Card -->
-  <div class="bg-gray-900 p-6 rounded-2xl shadow-xl w-96 relative">
-
-    <!-- Top Icon -->
-    <button onclick="toggleQR()" class="absolute top-3 right-3 text-white text-xl hover:scale-110 transition">
-      ⚡
-    </button>
-
-    <h2 class="text-xl font-bold mb-4 text-center">ShadowChat</h2>
-
-    <button onclick="createSession()" class="w-full bg-blue-600 p-2 rounded mb-3">Create Session</button>
-
-    <input id="sessionInput" placeholder="Enter Code" class="w-full p-2 rounded text-black mb-2" />
-    <button onclick="joinSession()" class="w-full bg-green-600 p-2 rounded">Join</button>
-
-    <h3 id="sessionId" class="mt-3 text-center"></h3>
-
-    <!-- Chat -->
-    <div id="chat" class="hidden mt-4">
-      <div class="h-40 overflow-y-auto bg-gray-800 p-2 rounded" id="messages"></div>
-
-      <input id="msg" placeholder="Type message" class="w-full p-2 rounded text-black mt-2" />
-
-      <div class="flex gap-2 mt-2">
-        <button onclick="sendMessage()" class="flex-1 bg-blue-600 p-2 rounded">Send</button>
-        <button onclick="endSession()" class="flex-1 bg-red-600 p-2 rounded">End</button>
-      </div>
+    <!-- Top Left Icon -->
+    <div class="top-left-icon" id="logoIcon" onclick="location.reload()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="url(#gradient)" style="width: 32px; height: 32px;">
+            <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#9d50bb;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#6e48aa;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A9.75 9.75 0 0112 2.25e-0 0 0 0 12h2.25zM12 21a9 9 0 100-18 9 9 0 000 18z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            <!-- Simplified shadow-like chat icon -->
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.01z" />
+        </svg>
     </div>
 
-    <!-- QR Popup -->
-    <div id="qrBox" class="hidden absolute inset-0 bg-black bg-opacity-80 flex items-center justify-center">
-      <div class="bg-gray-800 p-6 rounded-xl shadow-2xl border border-blue-500 animate-pulse">
-        <p class="text-center mb-2">QR Code</p>
-        <div class="w-40 h-40 bg-white flex items-center justify-center text-black">
-          QR
+    <div class="main-container">
+        <div class="brand-section">
+            <h1 class="brand-name">Shadowchat</h1>
         </div>
-        <button onclick="toggleQR()" class="mt-3 w-full bg-red-500 p-2 rounded">Close</button>
-      </div>
+
+        <!-- Main Card -->
+        <div class="card" id="mainCard">
+            <button onclick="createSession()" class="button-primary">Create New Session</button>
+            
+            <div style="margin: 1.5rem 0; color: var(--text-muted); font-size: 0.9rem;">OR JOIN EXISTING</div>
+            
+            <input id="sessionInput" placeholder="Enter Session Code" class="input-field" />
+            <button onclick="joinSession()" class="button-primary" style="background: var(--card-bg); border: 1px solid var(--primary);">Join Session</button>
+
+            <h3 id="sessionId" style="margin-top: 1rem; color: var(--primary); font-weight: 600;"></h3>
+
+            <!-- Chat Section -->
+            <div id="chat" style="display: none; margin-top: 2rem; text-align: left;">
+                <div id="messages" style="height: 250px; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.05);"></div>
+                
+                <input id="msg" placeholder="Type a message..." class="input-field" />
+                
+                <div style="display: flex; gap: 1rem;">
+                    <button onclick="sendMessage()" class="button-primary" style="flex: 2;">Send</button>
+                    <button onclick="endSession()" class="button-primary" style="flex: 1; background: #ea4335;">End</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-  </div>
+    <!-- QR Popup (Simplified) -->
+    <div id="qrBox" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+        <div class="card" style="width: 300px; text-align: center;">
+            <p style="margin-bottom: 1rem;">Session QR Code</p>
+            <div id="qrDisplay" style="background: white; padding: 10px; border-radius: 12px; width: 200px; height: 200px; margin: 0 auto;"></div>
+            <button onclick="toggleQR()" class="button-primary" style="margin-top: 1.5rem; background: #ea4335;">Close</button>
+        </div>
+    </div>
 
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-  <script src="app.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
