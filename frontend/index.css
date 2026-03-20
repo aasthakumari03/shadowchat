@@ -269,6 +269,27 @@ h1.brand-name {
     box-shadow: 0 10px 20px var(--primary-glow);
 }
 
+.button-ghost {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.button-ghost:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
 .input-field {
     width: 100%;
     background: rgba(255,255,255,0.03);
