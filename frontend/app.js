@@ -75,6 +75,12 @@ async function endSession() {
   location.reload();
 }
 
+function showApp() {
+  document.getElementById('mainCard').style.display = 'block';
+  document.getElementById('getStartedBtn').style.display = 'none';
+  document.querySelector('.brand-tagline').style.display = 'none';
+}
+
 // Spotlight cursor tracking
 document.addEventListener('mousemove', (e) => {
   const x = (e.clientX / window.innerWidth) * 100;
