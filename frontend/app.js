@@ -19,8 +19,12 @@ function closeLoginModal() {
 }
 
 function submitLogin() {
-  alert('Login successful');
   closeLoginModal();
+  document.getElementById('successPopup').style.display = 'flex';
+}
+
+function closeSuccessPopup() {
+  document.getElementById('successPopup').style.display = 'none';
 }
 
 async function createSession() {
