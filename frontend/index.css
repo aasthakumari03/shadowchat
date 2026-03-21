@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
 
 :root {
-    --bg-color: #0f0f11;
+    --bg-color: #141418;
     --card-bg: #1a1a1e;
     --primary: #a855f7;
     --primary-glow: rgba(168, 85, 247, 0.4);
@@ -29,12 +29,74 @@ body {
     font-family: var(--font-jakarta);
     min-height: 100vh;
     overflow-x: hidden;
-    background: radial-gradient(circle at center, #1a1a22 0%, #0f0f11 100%);
+    background: radial-gradient(circle at center, #1e1e26 0%, #141418 100%);
     position: relative;
     line-height: 1.6;
 }
 
-/* Reduced Spotlight effect */
+/* Chat Vibe Background */
+.bg-vibe-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.vibe-element {
+    position: absolute;
+    opacity: 0.15;
+    filter: blur(2px);
+    animation: float var(--d, 20s) ease-in-out infinite;
+    top: var(--y, 50%);
+    left: var(--x, 50%);
+}
+
+.bubble-1 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(80px);
+    --x: 10%;
+    --y: 20%;
+    --d: 25s;
+}
+
+.bubble-2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(100px);
+    --x: 80%;
+    --y: 70%;
+    --d: 30s;
+    opacity: 0.1;
+}
+
+.emoji {
+    font-size: 2rem;
+    filter: contrast(1.2);
+    opacity: 0.2;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    33% {
+        transform: translate(20px, -30px) rotate(5deg);
+    }
+    66% {
+        transform: translate(-15px, 20px) rotate(-5deg);
+    }
+}
+
+/* Updated Spotlight effect */
 body::before {
     content: '';
     position: fixed;
@@ -43,9 +105,9 @@ body::before {
     width: 100%;
     height: 100%;
     background: radial-gradient(
-        600px circle at var(--x, 50%) var(--y, 50%), 
-        rgba(168, 85, 247, 0.05), 
-        transparent 35%
+        700px circle at var(--x, 50%) var(--y, 50%), 
+        rgba(168, 85, 247, 0.08), 
+        transparent 40%
     );
     z-index: 0;
     pointer-events: none;
