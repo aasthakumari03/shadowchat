@@ -10,6 +10,19 @@ function toggleQR() {
   }
 }
 
+function openLoginModal() {
+  document.getElementById('loginModal').style.display = 'flex';
+}
+
+function closeLoginModal() {
+  document.getElementById('loginModal').style.display = 'none';
+}
+
+function submitLogin() {
+  alert('Login successful');
+  closeLoginModal();
+}
+
 async function createSession() {
   const res = await fetch('http://localhost:5000/create-session', { method: 'POST' });
   const data = await res.json();
