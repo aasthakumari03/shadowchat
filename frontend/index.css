@@ -464,6 +464,110 @@ h1.brand-name {
     h1.brand-name { font-size: 4rem; letter-spacing: -2px; }
 }
 
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 12, 0.4);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-nav {
+    position: absolute;
+    top: 30px;
+    left: 8%;
+    z-index: 2001;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 440px;
+    width: 100%;
+    transform: scale(1);
+    animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.close-modal:hover {
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Shining Border Effect */
+.shining-border {
+    position: relative;
+    overflow: hidden;
+}
+
+.shining-border::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(
+        45deg,
+        transparent 25%,
+        rgba(168, 85, 247, 0.3) 45%,
+        rgba(236, 72, 153, 0.3) 55%,
+        transparent 75%
+    );
+    background-size: 200% 200%;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 1px;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+    animation: shine-move 4s linear infinite;
+}
+
+@keyframes shine-move {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalSlide {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .bottom-credit {
     position: absolute;
     bottom: 30px;

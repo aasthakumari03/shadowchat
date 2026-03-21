@@ -144,7 +144,7 @@ document.addEventListener('mousemove', (e) => {
 // Typewriter effect on Logo
 const navLeft = document.querySelector('.nav-left');
 const brandText = document.querySelector('.nav-brand-text');
-const fullText = "SHADOWCHAT";
+const fullText = "shadowchat";
 let typingInterval;
 
 if (navLeft && brandText) {
