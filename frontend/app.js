@@ -140,3 +140,30 @@ document.addEventListener('mousemove', (e) => {
   document.body.style.setProperty('--y', `${y}%`);
 });
 
+
+// Typewriter effect on Logo
+const navLeft = document.querySelector('.nav-left');
+const brandText = document.querySelector('.nav-brand-text');
+const fullText = "SHADOWCHAT";
+let typingInterval;
+
+if (navLeft && brandText) {
+  navLeft.addEventListener('mouseenter', () => {
+    brandText.textContent = '';
+    let i = 0;
+    clearInterval(typingInterval);
+    typingInterval = setInterval(() => {
+      if (i < fullText.length) {
+        brandText.textContent += fullText[i];
+        i++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, 80);
+  });
+  
+  navLeft.addEventListener('mouseleave', () => {
+    clearInterval(typingInterval);
+    brandText.textContent = '';
+  });
+}
