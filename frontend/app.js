@@ -21,6 +21,12 @@ function closeLoginModal() {
 function submitLogin() {
   closeLoginModal();
   document.getElementById('successPopup').style.display = 'flex';
+  
+  // Swap Login button with Profile icon
+  const loginBtn = document.getElementById('loginBtn');
+  const profileBtn = document.getElementById('profileBtn');
+  if (loginBtn) loginBtn.style.display = 'none';
+  if (profileBtn) profileBtn.style.display = 'flex';
 }
 
 function closeSuccessPopup() {
