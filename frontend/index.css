@@ -389,10 +389,12 @@ h1.brand-name {
 
 .modal-content {
     position: relative;
-    max-width: 440px;
+    max-width: 360px;
     width: 100%;
     transform: scale(1);
     animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 0 1.5px rgba(168, 85, 247, 0.7), 0 0 35px rgba(168, 85, 247, 0.3), 0 0 70px rgba(236, 72, 153, 0.15);
+    border-radius: 28px;
 }
 
 .close-modal {
@@ -429,29 +431,35 @@ h1.brand-name {
 /* Shining Border Effect */
 .shining-border {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+}
+
+.shining-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(var(--shine-angle, 0deg), #a855f7, #ec4899, #6366f1, #a855f7);
+    z-index: -1;
+    animation: shine-spin 3.5s linear infinite;
+    filter: blur(3px);
+    opacity: 0.85;
 }
 
 .shining-border::after {
     content: '';
     position: absolute;
-    inset: -1px;
-    background: linear-gradient(
-        45deg,
-        transparent 25%,
-        rgba(168, 85, 247, 0.3) 45%,
-        rgba(236, 72, 153, 0.3) 55%,
-        transparent 75%
-    );
-    background-size: 200% 200%;
-    z-index: -1;
+    inset: -2px;
     border-radius: inherit;
-    padding: 1px;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    -webkit-mask-composite: destination-out;
-    animation: shine-move 4s linear infinite;
+    background: linear-gradient(var(--shine-angle, 0deg), #a855f7, #ec4899, #6366f1, #a855f7);
+    z-index: -1;
+    animation: shine-spin 3.5s linear infinite;
+    opacity: 0.5;
+}
+
+@keyframes shine-spin {
+    0%   { --shine-angle: 0deg; }
+    100% { --shine-angle: 360deg; }
 }
 
 @keyframes shine-move {
