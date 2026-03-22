@@ -261,13 +261,14 @@ h1.brand-name {
 }
 
 .card {
-    background: var(--card-bg);
-    border: 1px solid var(--glass-border);
+    background: #0f0f12;
+    border: 1px solid rgba(168, 85, 247, 0.35);
     padding: 3rem;
     border-radius: 32px;
     width: 100%;
     max-width: 480px;
-    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.2),
+                0 30px 60px -12px rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(20px);
 }
 
@@ -393,8 +394,13 @@ h1.brand-name {
     width: 100%;
     transform: scale(1);
     animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 0 0 1.5px rgba(168, 85, 247, 0.7), 0 0 35px rgba(168, 85, 247, 0.3), 0 0 70px rgba(236, 72, 153, 0.15);
+    box-shadow: 0 0 0 1.5px rgba(168, 85, 247, 0.75),
+                0 0 40px rgba(168, 85, 247, 0.2),
+                0 0 80px rgba(236, 72, 153, 0.08),
+                0 25px 50px rgba(0,0,0,0.6);
     border-radius: 28px;
+    background: #0a0a0c; /* Darker background */
+    border: 1.5px solid rgba(168, 85, 247, 0.75); /* Highlighted border */
 }
 
 .close-modal {
