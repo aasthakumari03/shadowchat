@@ -598,3 +598,92 @@ h1.brand-name {
     text-transform: uppercase;
     white-space: nowrap;
 }
+
+/* ── Professional Success Popup ── */
+.success-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 2.2rem 2rem;
+    max-width: 320px;
+    width: 100%;
+    text-align: center;
+    animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 0 1.5px rgba(168, 85, 247, 0.7),
+                0 0 35px rgba(168, 85, 247, 0.25),
+                0 25px 50px rgba(0,0,0,0.5);
+}
+
+.success-icon-ring {
+    width: 72px;
+    height: 72px;
+    background: rgba(168, 85, 247, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.4rem;
+    border: 1.5px solid rgba(168, 85, 247, 0.3);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+}
+
+.success-checkmark {
+    width: 40px;
+    height: 40px;
+}
+
+.check-circle {
+    stroke: var(--primary);
+    stroke-width: 2.5;
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-linecap: round;
+    animation: draw-circle 0.6s ease-out 0.1s forwards;
+}
+
+.check-tick {
+    stroke: var(--primary);
+    stroke-width: 3;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    animation: draw-tick 0.4s ease-out 0.7s forwards;
+}
+
+@keyframes draw-circle {
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes draw-tick {
+    to { stroke-dashoffset: 0; }
+}
+
+.success-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    font-family: var(--font-outfit);
+    color: #fff;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.3px;
+}
+
+.success-sub {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.success-divider {
+    height: 1px;
+    background: var(--glass-border);
+    margin: 1.4rem 0;
+}
+
+.success-btn {
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 12px 20px;
+    border-radius: 12px;
+    gap: 8px;
+}
