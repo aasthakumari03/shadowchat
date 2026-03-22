@@ -294,6 +294,15 @@ h1.brand-name {
     box-shadow: 0 10px 20px var(--primary-glow);
 }
 
+.get-started-btn {
+    background: linear-gradient(135deg, var(--accent), #f43f5e) !important;
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+}
+
+.get-started-btn:hover {
+    box-shadow: 0 10px 20px rgba(236, 72, 153, 0.5) !important;
+}
+
 .button-ghost {
     background: rgba(255,255,255,0.03);
     border: 1px solid var(--glass-border);
