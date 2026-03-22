@@ -19,6 +19,26 @@ function closeLoginModal() {
 }
 
 function submitLogin() {
+  const name = document.getElementById('loginName')?.value.trim();
+  const email = document.getElementById('loginEmail')?.value.trim();
+  const password = document.getElementById('loginPassword')?.value;
+
+  if (!name || !email || !password) {
+    alert('Please fill in all details correctly.');
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  if (password.length < 6) {
+    alert('Password must be at least 6 characters long.');
+    return;
+  }
+
   closeLoginModal();
   document.getElementById('successPopup').style.display = 'flex';
   
@@ -27,6 +47,11 @@ function submitLogin() {
   const profileBtn = document.getElementById('profileBtn');
   if (loginBtn) loginBtn.style.display = 'none';
   if (profileBtn) profileBtn.style.display = 'flex';
+
+  // Clear fields
+  if (document.getElementById('loginName')) document.getElementById('loginName').value = '';
+  if (document.getElementById('loginEmail')) document.getElementById('loginEmail').value = '';
+  if (document.getElementById('loginPassword')) document.getElementById('loginPassword').value = '';
 }
 
 function closeSuccessPopup() {
