@@ -148,18 +148,23 @@
         .nav-profile-logo {
             width: 42px;
             height: 42px;
-            border-radius: 4px; /* Square based logo */
-            overflow: hidden;
+            border-radius: 12px;
+            background: rgba(168, 85, 247, 0.1);
+            backdrop-filter: blur(10px);
             border: 2px solid var(--primary);
             box-shadow: 0 0 15px var(--primary-glow);
             transition: var(--transition);
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
-        .nav-profile-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .nav-profile-logo:hover {
+            transform: scale(1.05);
+            background: rgba(168, 85, 247, 0.2);
+            box-shadow: 0 0 25px var(--primary-glow);
         }
 
         /* Animations */
@@ -232,8 +237,10 @@
     <!-- Navigation Bar -->
     <nav class="top-nav">
         <div class="nav-left">
-            <div class="nav-profile-logo">
-                <img src="avatar.png" alt="Profile Avatar">
+            <div class="nav-profile-logo" title="My Profile">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #fff;">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
             </div>
         </div>
 
