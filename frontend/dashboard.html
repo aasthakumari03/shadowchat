@@ -249,7 +249,7 @@
     <!-- Main Content -->
     <main class="main-content">
         <section class="welcome-section">
-            <h1 class="welcome-title">Welcome back, Shadow</h1>
+            <h1 class="welcome-title">Welcome back, <span id="welcomeName">Shadow</span></h1>
             <p class="welcome-subtitle">Your encrypted communications are secure. 12 active sessions detected.</p>
         </section>
 
@@ -287,7 +287,10 @@
             const email = localStorage.getItem('shadowUserEmail');
             const name = localStorage.getItem('shadowUserName');
             if (email) document.getElementById('displayUserEmail').textContent = email;
-            if (name) document.getElementById('displayUserName').textContent = name;
+            if (name) {
+                document.getElementById('displayUserName').textContent = name;
+                document.getElementById('welcomeName').textContent = name;
+            }
         });
     </script>
 </body>
