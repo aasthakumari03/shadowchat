@@ -16,6 +16,17 @@
     --glass-border: rgba(255, 255, 255, 0.08);
 }
 
+.light-theme {
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --primary: #7c3aed;
+    --primary-glow: rgba(124, 58, 237, 0.15);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -131,6 +142,19 @@ body::before {
     );
     z-index: 0;
     pointer-events: none;
+    transition: background 0.5s ease;
+}
+
+.light-theme body {
+    background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+}
+
+.light-theme body::before {
+    background: radial-gradient(
+        700px circle at var(--x, 50%) var(--y, 50%), 
+        rgba(124, 58, 237, 0.05), 
+        transparent 40%
+    );
 }
 /* Navbar */
 .top-nav {
