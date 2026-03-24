@@ -42,6 +42,10 @@ function submitLogin() {
   closeLoginModal();
   document.getElementById('successPopup').style.display = 'flex';
   
+  // Store login info for Dashboard
+  localStorage.setItem('shadowUserEmail', email);
+  localStorage.setItem('shadowUserName', name);
+  
   // Swap Login button with Profile icon
   const loginBtn = document.getElementById('loginBtn');
   const profileBtn = document.getElementById('profileBtn');
