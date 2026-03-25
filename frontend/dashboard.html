@@ -383,6 +383,9 @@
             if (profileLogo) {
                 profileLogo.addEventListener('click', openQRModal);
             }
+
+            // Check if we arrived via a QR scan
+            checkAutoJoin();
         });
     </script>
 </body>

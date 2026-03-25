@@ -94,7 +94,11 @@ async function joinSession() {
 
 function startChat() {
   document.getElementById('chat').style.display = 'block';
-  document.getElementById('sessionId').scrollIntoView({ behavior: 'smooth' });
+  const sessionDisplay = document.getElementById('sessionId');
+  if (sessionDisplay) {
+    sessionDisplay.innerText = 'SESSION CODE: ' + currentSession;
+    sessionDisplay.scrollIntoView({ behavior: 'smooth' });
+  }
   socket.emit('join-session', currentSession);
 }
 
@@ -203,9 +207,15 @@ let qrRefreshInterval = null;
 let qrCountdownInterval = null;
 let secondsRemaining = 10;
 
-function openQRModal() {
+async function openQRModal() {
     const modal = document.getElementById('qrModal');
     modal.style.display = 'flex';
+    
+    // If no active session, create one first so we have something to share
+    if (!currentSession) {
+        await createSession();
+    }
+    
     generateQRCode();
     startQRRefreshTimer();
 }
@@ -223,16 +233,14 @@ function generateQRCode() {
     
     const randomToken = 'SHADOW-' + Math.random().toString(36).substr(2, 9).toUpperCase();
     const userEmail = localStorage.getItem('shadowUserEmail') || 'anonymous@shadowchat.enc';
-    const qrData = JSON.stringify({
-        token: randomToken,
-        email: userEmail,
-        timestamp: Date.now()
-    });
+    
+    // Create a JOIN URL instead of just JSON
+    const joinURL = `${window.location.origin}/dashboard.html?join=${currentSession}`;
 
     qrInstance = new QRCode(qrcodeDiv, {
-        text: qrData,
-        width: 200,
-        height: 200,
+        text: joinURL,
+        width: 250,
+        height: 250,
         colorDark: "#000000",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
@@ -240,6 +248,32 @@ function generateQRCode() {
     
     secondsRemaining = 10;
     document.getElementById('refreshCountdown').textContent = secondsRemaining;
+}
+
+// Auto-join logic for scanned QR links
+async function checkAutoJoin() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const joinId = urlParams.get('join');
+    
+    if (joinId) {
+        console.log('Auto-joining session:', joinId);
+        
+        const res = await fetch('http://localhost:5000/join-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId: joinId })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+            currentSession = joinId;
+            startChat();
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } else {
+            console.error('Failed to auto-join: Invalid session ID');
+        }
+    }
 }
 
 function startQRRefreshTimer() {
