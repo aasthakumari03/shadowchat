@@ -1,30 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
 
 :root {
-    --bg-color: #141418;
-    --card-bg: #1a1a1e;
-    --primary: #a855f7;
-    --primary-glow: rgba(168, 85, 247, 0.4);
-    --secondary: #7c3aed;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --accent: #ec4899;
+    --bg-color: #EDF6F9;
+    --card-bg: rgba(131, 197, 190, 0.15);
+    --primary: #006D77;
+    --primary-glow: rgba(0, 109, 119, 0.2);
+    --secondary: #83C5BE;
+    --text-main: #006D77;
+    --text-muted: #4d8d94;
+    --accent: #E29578;
     --font-outfit: 'Outfit', sans-serif;
     --font-jakarta: 'Plus Jakarta Sans', sans-serif;
     --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    --glass-bg: rgba(26, 26, 30, 0.6);
-    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-bg: rgba(237, 246, 249, 0.8);
+    --glass-border: rgba(0, 109, 119, 0.1);
 }
 
 .light-theme {
-    --bg-color: #f8fafc;
+    --bg-color: #EDF6F9;
     --card-bg: #ffffff;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --glass-bg: rgba(255, 255, 255, 0.8);
-    --glass-border: rgba(0, 0, 0, 0.08);
-    --primary: #7c3aed;
-    --primary-glow: rgba(124, 58, 237, 0.15);
+    --text-main: #006D77;
+    --text-muted: #83C5BE;
+    --glass-bg: rgba(237, 246, 249, 0.8);
+    --glass-border: rgba(0, 109, 119, 0.08);
+    --primary: #006D77;
+    --primary-glow: rgba(0, 109, 119, 0.15);
 }
 
 * {
@@ -40,7 +40,7 @@ body {
     font-family: var(--font-jakarta);
     min-height: 100vh;
     overflow-x: hidden;
-    background: radial-gradient(circle at center, #1e1e26 0%, #141418 100%);
+    background: radial-gradient(circle at center, #ffffff 0%, #EDF6F9 100%);
     position: relative;
     line-height: 1.6;
 }
@@ -137,7 +137,7 @@ body::before {
     height: 100%;
     background: radial-gradient(
         700px circle at var(--x, 50%) var(--y, 50%), 
-        rgba(168, 85, 247, 0.08), 
+        rgba(0, 109, 119, 0.03), 
         transparent 40%
     );
     z-index: 0;
@@ -146,13 +146,13 @@ body::before {
 }
 
 .light-theme body {
-    background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+    background: radial-gradient(circle at center, #ffffff 0%, #EDF6F9 100%);
 }
 
 .light-theme body::before {
     background: radial-gradient(
         700px circle at var(--x, 50%) var(--y, 50%), 
-        rgba(124, 58, 237, 0.05), 
+        rgba(0, 109, 119, 0.05), 
         transparent 40%
     );
 }
@@ -199,7 +199,7 @@ body::before {
     font-weight: 800;
     font-family: var(--font-outfit);
     letter-spacing: -0.5px;
-    background: linear-gradient(135deg, #fff, #94a3b8);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -217,13 +217,13 @@ body::before {
 
 .profile-btn {
     gap: 8px;
-    border-color: rgba(168, 85, 247, 0.4) !important;
+    border-color: rgba(131, 197, 190, 0.4) !important;
     transition: var(--transition);
 }
 
 .profile-btn:hover {
-    border-color: rgba(168, 85, 247, 0.8) !important;
-    background: rgba(168, 85, 247, 0.1) !important;
+    border-color: rgba(131, 197, 190, 0.8) !important;
+    background: rgba(131, 197, 190, 0.1) !important;
 }
 
 .profile-avatar {
@@ -270,8 +270,8 @@ section {
     display: inline-flex;
     align-items: center;
     padding: 6px 16px;
-    background: rgba(168, 85, 247, 0.1);
-    border: 1px solid rgba(168, 85, 247, 0.2);
+    background: rgba(131, 197, 190, 0.1);
+    border: 1px solid rgba(131, 197, 190, 0.2);
     border-radius: 100px;
     color: var(--primary);
     font-size: 0.85rem;
@@ -287,13 +287,13 @@ h1.brand-name {
     letter-spacing: -4px;
     line-height: 0.9;
     margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, #fff 15%, #d8b4fe 30%, var(--primary) 50%, #7c3aed 70%, #6366f1 90%);
+    background: linear-gradient(135deg, var(--primary) 15%, var(--secondary) 30%, var(--accent) 50%, var(--primary) 70%, #83C5BE 90%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: shimmer 6s linear infinite;
-    filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.25)) drop-shadow(0 15px 45px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 0 25px rgba(131, 197, 190, 0.25)) drop-shadow(0 15px 45px rgba(0,0,0,0.5));
 }
 
 .brand-tagline {
@@ -310,18 +310,18 @@ h1.brand-name {
 .session-section {
     display: flex;
     justify-content: center;
-    background: radial-gradient(circle at center, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(131, 197, 190, 0.05) 0%, transparent 70%);
 }
 
 .card {
-    background: #0f0f12;
-    border: 1px solid rgba(168, 85, 247, 0.35);
+    background: #ffffff;
+    border: 1px solid rgba(0, 109, 119, 0.1);
     padding: 3rem;
     border-radius: 32px;
     width: 100%;
     max-width: 480px;
-    box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.2),
-                0 30px 60px -12px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 0 1px rgba(0, 109, 119, 0.05),
+                0 30px 60px -12px rgba(0, 109, 119, 0.1);
     backdrop-filter: blur(20px);
 }
 
@@ -349,12 +349,12 @@ h1.brand-name {
 }
 
 .get-started-btn {
-    background: linear-gradient(135deg, #06b6d4, #3b82f6) !important;
-    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
+    background: linear-gradient(135deg, #83C5BE, #E29578) !important;
+    box-shadow: 0 4px 15px rgba(131, 197, 190, 0.35);
 }
 
 .get-started-btn:hover {
-    box-shadow: 0 10px 20px rgba(6, 182, 212, 0.55) !important;
+    box-shadow: 0 10px 20px rgba(131, 197, 190, 0.55) !important;
 }
 
 .button-ghost {
@@ -380,9 +380,9 @@ h1.brand-name {
 
 .input-field {
     width: 100%;
-    background: rgba(255,255,255,0.03);
+    background: rgba(0, 0, 0, 0.03);
     border: 1px solid var(--glass-border);
-    color: white;
+    color: var(--text-main);
     padding: 14px;
     border-radius: 14px;
     margin-bottom: 1rem;
@@ -447,13 +447,13 @@ h1.brand-name {
     width: 100%;
     transform: scale(1);
     animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 0 0 1.5px rgba(168, 85, 247, 0.75),
-                0 0 40px rgba(168, 85, 247, 0.2),
-                0 0 80px rgba(236, 72, 153, 0.08),
+    box-shadow: 0 0 0 1.5px rgba(131, 197, 190, 0.75),
+                0 0 40px rgba(131, 197, 190, 0.2),
+                0 0 80px rgba(226, 149, 120, 0.08),
                 0 25px 50px rgba(0,0,0,0.6);
     border-radius: 28px;
-    background: #0a0a0c; /* Darker background */
-    border: 1.5px solid rgba(168, 85, 247, 0.75); /* Highlighted border */
+    background: #ffffff; /* Light background */
+    border: 1.5px solid rgba(0, 109, 119, 0.2); /* Subtle border */
 }
 
 .close-modal {
@@ -491,28 +491,27 @@ h1.brand-name {
 .shining-border {
     position: relative;
     overflow: hidden;
-    border: 1.5px solid rgba(168, 85, 247, 0.65) !important;
+    border: 1.5px solid rgba(131, 197, 190, 0.65) !important;
     box-shadow:
-        0 0 0 1px rgba(168, 85, 247, 0.15),
-        0 0 20px rgba(168, 85, 247, 0.25),
-        0 0 45px rgba(168, 85, 247, 0.1) !important;
+        0 0 0 1px rgba(0, 109, 119, 0.1),
+        0 15px 35px rgba(0, 109, 119, 0.08) !important;
     animation: border-pulse 3s ease-in-out infinite;
 }
 
 @keyframes border-pulse {
     0%, 100% {
         box-shadow:
-            0 0 0 1px rgba(168, 85, 247, 0.15),
-            0 0 20px rgba(168, 85, 247, 0.25),
-            0 0 45px rgba(168, 85, 247, 0.1);
-        border-color: rgba(168, 85, 247, 0.65);
+            0 0 0 1px rgba(131, 197, 190, 0.15),
+            0 0 20px rgba(131, 197, 190, 0.25),
+            0 0 45px rgba(131, 197, 190, 0.1);
+        border-color: rgba(131, 197, 190, 0.65);
     }
     50% {
         box-shadow:
-            0 0 0 1px rgba(168, 85, 247, 0.25),
-            0 0 30px rgba(168, 85, 247, 0.4),
-            0 0 60px rgba(236, 72, 153, 0.15);
-        border-color: rgba(200, 100, 255, 0.9);
+            0 0 0 1px rgba(131, 197, 190, 0.25),
+            0 0 30px rgba(131, 197, 190, 0.4),
+            0 0 60px rgba(226, 149, 120, 0.15);
+        border-color: rgba(237, 246, 249, 0.9);
     }
 }
 
@@ -609,8 +608,8 @@ h1.brand-name {
     background: linear-gradient(
         45deg,
         transparent 25%,
-        rgba(168, 85, 247, 0.3) 45%,
-        rgba(236, 72, 153, 0.3) 55%,
+        rgba(131, 197, 190, 0.3) 45%,
+        rgba(226, 149, 120, 0.3) 55%,
         transparent 75%
     );
     background-size: 200% 200%;
@@ -662,22 +661,22 @@ h1.brand-name {
     width: 100%;
     text-align: center;
     animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 0 0 1.5px rgba(168, 85, 247, 0.6),
-                0 0 30px rgba(168, 85, 247, 0.15),
+    box-shadow: 0 0 0 1.5px rgba(131, 197, 190, 0.6),
+                0 0 30px rgba(131, 197, 190, 0.15),
                 0 25px 50px rgba(0,0,0,0.6);
 }
 
 .success-icon-ring {
     width: 72px;
     height: 72px;
-    background: rgba(168, 85, 247, 0.08);
+    background: rgba(131, 197, 190, 0.08);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 1.4rem;
-    border: 1.5px solid rgba(168, 85, 247, 0.25);
-    box-shadow: 0 0 18px rgba(168, 85, 247, 0.15);
+    border: 1.5px solid rgba(131, 197, 190, 0.25);
+    box-shadow: 0 0 18px rgba(131, 197, 190, 0.15);
 }
 
 .success-checkmark {
@@ -761,13 +760,13 @@ h1.brand-name {
 }
 
 .qr-container {
-    background: rgba(20, 20, 24, 0.9);
+    background: #ffffff;
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(168, 85, 247, 0.4);
+    border: 1px solid rgba(0, 109, 119, 0.1);
     border-radius: 32px;
     padding: 3rem;
     text-align: center;
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), 0 0 50px rgba(168, 85, 247, 0.15);
+    box-shadow: 0 40px 100px rgba(0, 109, 119, 0.15);
     max-width: 350px;
     width: 90%;
     position: relative;
