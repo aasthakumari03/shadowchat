@@ -209,10 +209,12 @@ let secondsRemaining = 10;
 
 async function openQRModal() {
     const modal = document.getElementById('qrModal');
+    if (!modal) return;
     modal.style.display = 'flex';
     
     // If no active session, create one first so we have something to share
     if (!currentSession) {
+        console.log('No active session. Creating one for QR...');
         await createSession();
     }
     
@@ -229,10 +231,8 @@ function closeQRModal() {
 
 function generateQRCode() {
     const qrcodeDiv = document.getElementById('qrcode');
+    if (!qrcodeDiv) return;
     qrcodeDiv.innerHTML = '';
-    
-    const randomToken = 'SHADOW-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-    const userEmail = localStorage.getItem('shadowUserEmail') || 'anonymous@shadowchat.enc';
     
     // Create a JOIN URL instead of just JSON
     const joinURL = `${window.location.origin}/dashboard.html?join=${currentSession}`;
@@ -241,13 +241,14 @@ function generateQRCode() {
         text: joinURL,
         width: 250,
         height: 250,
-        colorDark: "#000000",
+        colorDark: "#353535",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
     });
     
     secondsRemaining = 10;
-    document.getElementById('refreshCountdown').textContent = secondsRemaining;
+    const countdownEl = document.getElementById('refreshCountdown');
+    if (countdownEl) countdownEl.textContent = secondsRemaining;
 }
 
 // Auto-join logic for scanned QR links
