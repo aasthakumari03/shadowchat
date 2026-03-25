@@ -144,7 +144,6 @@
             font-size: 1.1rem;
         }
 
-        /* Profile Nav Adjustments */
         .nav-profile-logo {
             width: 42px;
             height: 42px;
@@ -167,7 +166,6 @@
             box-shadow: 0 0 25px var(--primary-glow);
         }
 
-        /* Animations */
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -188,6 +186,85 @@
         .main-content::-webkit-scrollbar-thumb {
             background: rgba(168, 85, 247, 0.2);
             border-radius: 10px;
+        }
+
+        /* QR Code Modal */
+        #qrModal.modal-overlay {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .qr-container {
+            background: rgba(26, 26, 30, 0.95);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(168, 85, 247, 0.1);
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        #qrcode {
+            background: #fff;
+            padding: 15px;
+            border-radius: 16px;
+            margin: 1.5rem auto;
+            display: inline-block;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        #qrcode img {
+            display: block;
+        }
+
+        .qr-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: var(--font-outfit);
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .qr-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .qr-refresh-timer {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .refresh-loader {
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(168, 85, 247, 0.2);
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -286,8 +363,26 @@
 
     </main>
 
+    <!-- QR Code Modal -->
+    <div id="qrModal" class="modal-overlay">
+        <div class="qr-container shining-border">
+            <button class="close-modal" onclick="closeQRModal()">&#x2715;</button>
+            <h2 class="qr-title">Secure Identity QR</h2>
+            <p class="qr-subtitle">Scan this code to verify your shadow identity on other devices.</p>
+            
+            <div id="qrcode"></div>
+            
+            <div class="qr-refresh-timer">
+                <div class="refresh-loader"></div>
+                <span>Refreshing in <span id="refreshCountdown">10</span>s</span>
+            </div>
+        </div>
+    </div>
+
     <div class="bottom-credit">ALL RIGHTS RESERVED|2026|AASTHA KUMARI</div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="app.js"></script>
     <script>
         // Load user identity from localStorage
         document.addEventListener('DOMContentLoaded', () => {
@@ -297,6 +392,12 @@
             if (name) {
                 document.getElementById('displayUserName').textContent = name;
                 document.getElementById('welcomeName').textContent = name;
+            }
+
+            // Add click listener for profile logo
+            const profileLogo = document.querySelector('.nav-profile-logo');
+            if (profileLogo) {
+                profileLogo.addEventListener('click', openQRModal);
             }
         });
     </script>

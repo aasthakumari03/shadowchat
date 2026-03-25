@@ -196,3 +196,63 @@ if (navLeft && brandText) {
     brandText.textContent = '';
   });
 }
+
+// QR Code Logic
+let qrInstance = null;
+let qrRefreshInterval = null;
+let qrCountdownInterval = null;
+let secondsRemaining = 10;
+
+function openQRModal() {
+    const modal = document.getElementById('qrModal');
+    modal.style.display = 'flex';
+    generateQRCode();
+    startQRRefreshTimer();
+}
+
+function closeQRModal() {
+    const modal = document.getElementById('qrModal');
+    modal.style.display = 'none';
+    clearInterval(qrRefreshInterval);
+    clearInterval(qrCountdownInterval);
+}
+
+function generateQRCode() {
+    const qrcodeDiv = document.getElementById('qrcode');
+    qrcodeDiv.innerHTML = '';
+    
+    const randomToken = 'SHADOW-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    const userEmail = localStorage.getItem('shadowUserEmail') || 'anonymous@shadowchat.enc';
+    const qrData = JSON.stringify({
+        token: randomToken,
+        email: userEmail,
+        timestamp: Date.now()
+    });
+
+    qrInstance = new QRCode(qrcodeDiv, {
+        text: qrData,
+        width: 200,
+        height: 200,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+    
+    secondsRemaining = 10;
+    document.getElementById('refreshCountdown').textContent = secondsRemaining;
+}
+
+function startQRRefreshTimer() {
+    clearInterval(qrRefreshInterval);
+    clearInterval(qrCountdownInterval);
+    
+    qrRefreshInterval = setInterval(() => {
+        generateQRCode();
+    }, 10000);
+
+    qrCountdownInterval = setInterval(() => {
+        secondsRemaining--;
+        if (secondsRemaining < 0) secondsRemaining = 10;
+        document.getElementById('refreshCountdown').textContent = secondsRemaining;
+    }, 1000);
+}
