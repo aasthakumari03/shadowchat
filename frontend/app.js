@@ -138,7 +138,7 @@ function addMessage(sender, text, type) {
 
   const textDiv = document.createElement('div');
   textDiv.innerText = text;
-  textDiv.style.background = type === 'sent' ? 'var(--primary)' : 'var(--card-bg)';
+  textDiv.style.background = type === 'sent' ? 'var(--primary)' : 'rgba(217, 217, 217, 0.2)';
   textDiv.style.color = type === 'sent' ? '#ffffff' : 'var(--text-main)';
   textDiv.style.padding = '8px 16px';
   textDiv.style.borderRadius = '12px';
