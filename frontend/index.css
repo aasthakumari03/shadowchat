@@ -1,31 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
 
 :root {
-    --bg-color: #FFFFFF;
-    --card-bg: rgba(217, 217, 217, 0.4);
-    --primary: #3C6E71;
-    --primary-glow: rgba(60, 110, 113, 0.2);
-    --secondary: #284B63;
-    --text-main: #353535;
-    --text-muted: #5a5a5a;
-    --accent: #3C6E71;
+    --bg-color: #EDF6F9;
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --primary: #006D77;
+    --primary-glow: rgba(0, 109, 119, 0.2);
+    --secondary: #83C5BE;
+    --accent-1: #FFDDD2;
+    --accent-2: #E29578;
+    --text-main: #006D77;
+    --text-muted: #83C5BE;
     --font-outfit: 'Outfit', sans-serif;
     --font-jakarta: 'Plus Jakarta Sans', sans-serif;
     --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    --glass-bg: rgba(255, 255, 255, 0.86);
-    --glass-border: rgba(60, 110, 113, 0.12);
+    --glass-bg: rgba(255, 255, 255, 0.88);
+    --glass-border: rgba(0, 109, 119, 0.12);
 }
 
-.light-theme {
-    --bg-color: #EDF6F9;
-    --card-bg: #ffffff;
-    --text-main: #006D77;
-    --text-muted: #83C5BE;
-    --glass-bg: rgba(237, 246, 249, 0.8);
-    --glass-border: rgba(0, 109, 119, 0.08);
-    --primary: #006D77;
-    --primary-glow: rgba(0, 109, 119, 0.15);
-}
+/* Removed .light-theme as it's now the default */
 
 * {
     margin: 0;
@@ -40,91 +32,9 @@ body {
     font-family: var(--font-jakarta);
     min-height: 100vh;
     overflow-x: hidden;
-    background: radial-gradient(circle at center, #ffffff 0%, #f4f4f4 100%);
+    background: radial-gradient(circle at center, #ffffff 0%, var(--bg-color) 100%);
     position: relative;
     line-height: 1.6;
-}
-
-/* Chat Vibe Background */
-.bg-vibe-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-.vibe-element {
-    position: absolute;
-    opacity: 0.1;
-    filter: blur(4px);
-    top: var(--y, 50%);
-    left: var(--x, 50%);
-}
-
-.bubble-1 {
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-    border-radius: 50%;
-    filter: blur(80px);
-    animation: float 25s ease-in-out infinite;
-    --x: 10%;
-    --y: 20%;
-}
-
-.bubble-2 {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
-    border-radius: 50%;
-    filter: blur(100px);
-    animation: float 30s ease-in-out infinite;
-    --x: 80%;
-    --y: 70%;
-    opacity: 0.1;
-}
-
-.emoji {
-    font-size: 2rem;
-    filter: blur(5px) contrast(1.1);
-    opacity: 0.12;
-    animation: rise var(--d, 45s) linear infinite;
-    animation-delay: var(--delay, 0s);
-    top: 110%;
-    left: var(--x, 50%);
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-    33% {
-        transform: translate(20px, -30px) rotate(5deg);
-    }
-    66% {
-        transform: translate(-15px, 20px) rotate(-5deg);
-    }
-}
-
-@keyframes rise {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0;
-    }
-    10% {
-        opacity: 0.12;
-    }
-    90% {
-        opacity: 0.12;
-    }
-    100% {
-        transform: translateY(-120vh) rotate(360deg);
-        opacity: 0;
-    }
 }
 
 /* Updated Spotlight effect */
@@ -137,24 +47,12 @@ body::before {
     height: 100%;
     background: radial-gradient(
         700px circle at var(--x, 50%) var(--y, 50%), 
-        rgba(60, 110, 113, 0.04), 
+        rgba(0, 109, 119, 0.05), 
         transparent 40%
     );
     z-index: 0;
     pointer-events: none;
     transition: background 0.5s ease;
-}
-
-.light-theme body {
-    background: radial-gradient(circle at center, #ffffff 0%, #EDF6F9 100%);
-}
-
-.light-theme body::before {
-    background: radial-gradient(
-        700px circle at var(--x, 50%) var(--y, 50%), 
-        rgba(0, 109, 119, 0.05), 
-        transparent 40%
-    );
 }
 /* Navbar */
 .top-nav {

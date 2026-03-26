@@ -20,7 +20,7 @@
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border-right: 1px solid var(--glass-border);
             padding: 100px 1.5rem 2rem;
@@ -48,9 +48,9 @@
         }
 
         .sidebar-item:hover, .sidebar-item.active {
-            background: rgba(60, 110, 113, 0.08);
+            background: var(--primary-glow);
             color: var(--primary);
-            box-shadow: 0 0 15px rgba(60, 110, 113, 0.05);
+            box-shadow: 0 0 15px var(--primary-glow);
         }
 
         .sidebar-item i {
@@ -71,7 +71,7 @@
 
         /* Glass Cards */
         .glass-card {
-            background: #ffffff;
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
@@ -110,7 +110,7 @@
         .stat-value {
             font-size: 1.8rem;
             font-weight: 800;
-            color: #EDF6F9;
+            color: var(--primary);
             font-family: var(--font-outfit);
         }
 
@@ -133,7 +133,7 @@
             font-weight: 800;
             font-family: var(--font-outfit);
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #EDF6F9, var(--primary));
+            background: linear-gradient(135deg, var(--accent-2), var(--primary));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -148,7 +148,7 @@
             width: 42px;
             height: 42px;
             border-radius: 12px;
-            background: rgba(60, 110, 113, 0.08);
+            background: var(--primary-glow);
             backdrop-filter: blur(10px);
             border: 2px solid var(--primary);
             box-shadow: 0 0 15px var(--primary-glow);
@@ -162,7 +162,7 @@
 
         .nav-profile-logo:hover {
             transform: scale(1.05);
-            background: rgba(60, 110, 113, 0.12);
+            background: var(--primary-glow);
             box-shadow: 0 0 25px var(--primary-glow);
         }
 
