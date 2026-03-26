@@ -1,20 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
 
 :root {
-    --bg-color: #EDF6F9;
-    --card-bg: rgba(255, 255, 255, 0.7);
-    --primary: #006D77;
-    --primary-glow: rgba(0, 109, 119, 0.2);
-    --secondary: #83C5BE;
-    --accent-1: #FFDDD2;
-    --accent-2: #E29578;
-    --text-main: #006D77;
-    --text-muted: #83C5BE;
+    --bg-color: #D9DCD6;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --primary: #2F6690;
+    --primary-glow: rgba(47, 102, 144, 0.2);
+    --secondary: #3A7CA5;
+    --accent-1: #81C3D7;
+    --accent-2: #16425B;
+    --text-main: #16425B;
+    --text-muted: #2F6690;
     --font-outfit: 'Outfit', sans-serif;
     --font-jakarta: 'Plus Jakarta Sans', sans-serif;
     --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    --glass-bg: rgba(255, 255, 255, 0.88);
-    --glass-border: rgba(0, 109, 119, 0.12);
+    --glass-bg: rgba(217, 220, 214, 0.88);
+    --glass-border: rgba(47, 102, 144, 0.12);
 }
 
 /* Removed .light-theme as it's now the default */
