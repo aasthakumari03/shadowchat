@@ -234,8 +234,8 @@ function generateQRCode() {
     if (!qrcodeDiv) return;
     qrcodeDiv.innerHTML = '';
     
-    // Create a JOIN URL instead of just JSON
-    const joinURL = `${window.location.origin}/dashboard.html?join=${currentSession}`;
+    // Create a JOIN URL that works for both index and dashboard
+    const joinURL = `${window.location.origin}${window.location.pathname}?join=${currentSession}`;
 
     qrInstance = new QRCode(qrcodeDiv, {
         text: joinURL,
@@ -269,10 +269,12 @@ async function checkAutoJoin() {
         if (data.success) {
             currentSession = joinId;
             startChat();
-            // Clean up URL
-            window.history.replaceState({}, document.title, window.location.pathname);
+            // Clean up URL without reload
+            const newURL = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, document.title, newURL);
         } else {
             console.error('Failed to auto-join: Invalid session ID');
+            alert('This session is no longer active.');
         }
     }
 }
