@@ -93,19 +93,54 @@ body::before {
 }
 
 .nav-brand-text {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-outfit);
     font-size: 1.6rem;
     font-weight: 800;
-    font-family: var(--font-outfit);
     letter-spacing: -0.5px;
+    cursor: pointer;
+}
+
+.nav-brand-text span {
+    display: inline-block;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    min-height: 1.4rem;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    transform: translateX(-10px);
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     white-space: nowrap;
-    display: flex;
-    align-items: center;
 }
+
+/* First letter 's' is always visible */
+.nav-brand-text span:first-child {
+    opacity: 1;
+    max-width: 50px;
+    transform: translateX(0);
+    margin-right: 4px;
+}
+
+.nav-left:hover .nav-brand-text span {
+    opacity: 1;
+    max-width: 50px;
+    transform: translateX(0);
+    margin-right: 2px;
+}
+
+/* Staggered animation */
+.nav-brand-text span:nth-child(2) { transition-delay: 0.05s; }
+.nav-brand-text span:nth-child(3) { transition-delay: 0.1s; }
+.nav-brand-text span:nth-child(4) { transition-delay: 0.15s; }
+.nav-brand-text span:nth-child(5) { transition-delay: 0.2s; }
+.nav-brand-text span:nth-child(6) { transition-delay: 0.25s; }
+.nav-brand-text span:nth-child(7) { transition-delay: 0.3s; }
+.nav-brand-text span:nth-child(8) { transition-delay: 0.35s; }
+.nav-brand-text span:nth-child(9) { transition-delay: 0.4s; }
+.nav-brand-text span:nth-child(10) { transition-delay: 0.45s; }
 
 .nav-right {
     display: flex;
@@ -196,10 +231,11 @@ h1.brand-name {
 
 .brand-tagline {
     color: var(--text-muted);
-    font-size: 1.4rem;
-    max-width: 600px;
-    margin: 0 auto 3rem;
+    font-size: 1.2rem;
+    max-width: 500px;
+    margin: 0 auto;
     font-weight: 400;
+    opacity: 0.8;
 }
 
 
@@ -247,12 +283,12 @@ h1.brand-name {
 }
 
 .get-started-btn {
-    background: linear-gradient(135deg, #83C5BE, #E29578) !important;
-    box-shadow: 0 4px 15px rgba(131, 197, 190, 0.35);
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2)) !important;
+    box-shadow: 0 4px 15px rgba(47, 102, 144, 0.35);
 }
 
 .get-started-btn:hover {
-    box-shadow: 0 10px 20px rgba(131, 197, 190, 0.55) !important;
+    box-shadow: 0 10px 20px rgba(47, 102, 144, 0.55) !important;
 }
 
 .button-ghost {
