@@ -63,20 +63,30 @@ function closeSuccessPopup() {
 }
 
 async function createSession() {
-  const res = await fetch('http://localhost:5000/create-session', { method: 'POST' });
-  const data = await res.json();
+  try {
+    const res = await fetch('/create-session', { method: 'POST' });
+    const data = await res.json();
 
-  currentSession = data.sessionId;
-  document.getElementById('sessionId').innerText = 'SESSION CODE: ' + currentSession;
+    currentSession = data.sessionId;
+    
+    // Update UI elements if they exist
+    const sessionDoc = document.getElementById('sessionId');
+    if (sessionDoc) sessionDoc.innerText = 'SESSION CODE: ' + currentSession;
+    
+    const sessionDisplay = document.getElementById('sessionIdDisplay');
+    if (sessionDisplay) sessionDisplay.innerText = 'SESSION: ' + currentSession;
 
-  startChat();
+    startChat();
+  } catch (err) {
+    console.error('Failed to create session:', err);
+  }
 }
 
 async function joinSession() {
   const sessionId = document.getElementById('sessionInput').value.trim().toUpperCase();
   if (!sessionId) return alert('Please enter a session code');
 
-  const res = await fetch('http://localhost:5000/join-session', {
+  const res = await fetch('/join-session', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ sessionId })
@@ -93,13 +103,44 @@ async function joinSession() {
 }
 
 function startChat() {
-  document.getElementById('chat').style.display = 'block';
-  const sessionDisplay = document.getElementById('sessionId');
-  if (sessionDisplay) {
-    sessionDisplay.innerText = 'SESSION CODE: ' + currentSession;
-    sessionDisplay.scrollIntoView({ behavior: 'smooth' });
+  const chatSection = document.getElementById('chatSection');
+  if (chatSection) {
+      chatSection.style.display = 'block';
+      // Smooth scroll to chat
+      setTimeout(() => chatSection.scrollIntoView({ behavior: 'smooth' }), 100);
   }
-  socket.emit('join-session', currentSession);
+  
+  const sessionDisplay = document.getElementById('sessionIdDisplay');
+  if (sessionDisplay) {
+    sessionDisplay.innerText = 'SESSION: ' + currentSession;
+  }
+  
+  const messagesDiv = document.getElementById('messages');
+  if (messagesDiv) {
+      // Keep existing system messages or clear if first join
+      if (messagesDiv.innerHTML.includes('Waiting for someone')) {
+          messagesDiv.innerHTML = '';
+      }
+  }
+
+  const userName = localStorage.getItem('shadowUserName') || 'Shadow User';
+  socket.emit('join-session', { sessionId: currentSession, userName });
+}
+
+socket.on('user-joined', (data) => {
+    addSystemMessage(`${data.userName} has connected to the shadow room`);
+});
+
+function addSystemMessage(text) {
+    const messagesDiv = document.getElementById('messages');
+    if (!messagesDiv) return;
+
+    const div = document.createElement('div');
+    div.className = 'system-message';
+    div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> <span>${text}</span>`;
+    
+    messagesDiv.appendChild(div);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 function sendMessage() {
@@ -107,48 +148,44 @@ function sendMessage() {
   const msg = msgInput.value.trim();
   if (!msg) return;
 
+  const senderName = localStorage.getItem('shadowUserName') || 'Shadow User';
+
   socket.emit('send-message', {
     sessionId: currentSession,
-    message: msg
+    message: {
+        text: msg,
+        sender: senderName
+    }
   });
 
-  addMessage('You', msg, 'sent');
+  addMessage(senderName, msg, 'sent');
   msgInput.value = '';
 }
 
-socket.on('receive-message', (msg) => {
-  addMessage('Stranger', msg, 'received');
+socket.on('receive-message', (data) => {
+  addMessage(data.sender, data.text, 'received');
 });
 
 function addMessage(sender, text, type) {
   const messagesDiv = document.getElementById('messages');
+  if (!messagesDiv) return;
+
+  const msgGroup = document.createElement('div');
+  msgGroup.style.display = 'flex';
+  msgGroup.style.flexDirection = 'column';
+  msgGroup.style.alignItems = type === 'sent' ? 'flex-end' : 'flex-start';
+
+  const info = document.createElement('div');
+  info.className = 'message-info';
+  info.innerText = sender;
+  
   const div = document.createElement('div');
-  div.style.marginBottom = '12px';
-  div.style.display = 'flex';
-  div.style.flexDirection = 'column';
-  div.style.alignItems = type === 'sent' ? 'flex-end' : 'flex-start';
+  div.className = `message ${type}`;
+  div.innerText = text;
 
-  const senderSpan = document.createElement('span');
-  senderSpan.innerText = sender;
-  senderSpan.style.fontSize = '0.7rem';
-  senderSpan.style.color = 'var(--text-muted)';
-  senderSpan.style.marginBottom = '4px';
-  senderSpan.style.textTransform = 'uppercase';
-  senderSpan.style.letterSpacing = '1px';
-
-  const textDiv = document.createElement('div');
-  textDiv.innerText = text;
-  textDiv.style.background = type === 'sent' ? 'var(--primary)' : 'rgba(217, 217, 217, 0.2)';
-  textDiv.style.color = type === 'sent' ? '#ffffff' : 'var(--text-main)';
-  textDiv.style.padding = '8px 16px';
-  textDiv.style.borderRadius = '12px';
-  textDiv.style.fontSize = '0.95rem';
-  textDiv.style.maxWidth = '80%';
-  textDiv.style.border = type === 'sent' ? 'none' : '1px solid var(--glass-border)';
-
-  div.appendChild(senderSpan);
-  div.appendChild(textDiv);
-  messagesDiv.appendChild(div);
+  msgGroup.appendChild(info);
+  msgGroup.appendChild(div);
+  messagesDiv.appendChild(msgGroup);
   
   // Scroll to bottom
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -156,7 +193,7 @@ function addMessage(sender, text, type) {
 
 async function endSession() {
   if (confirm('Are you sure you want to end this session? All messages will be lost.')) {
-    await fetch('http://localhost:5000/end-session', {
+    await fetch('/end-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sessionId: currentSession })
@@ -184,8 +221,11 @@ let secondsRemaining = 10;
 
 async function openQRModal() {
     const modal = document.getElementById('qrModal');
+    const profileLogo = document.querySelector('.nav-profile-logo');
     if (!modal) return;
     modal.style.display = 'flex';
+    
+    if (profileLogo) profileLogo.classList.add('active-qr');
     
     // If no active session, create one first so we have something to share
     if (!currentSession) {
@@ -199,7 +239,9 @@ async function openQRModal() {
 
 function closeQRModal() {
     const modal = document.getElementById('qrModal');
-    modal.style.display = 'none';
+    const profileLogo = document.querySelector('.nav-profile-logo');
+    if (modal) modal.style.display = 'none';
+    if (profileLogo) profileLogo.classList.remove('active-qr');
     clearInterval(qrRefreshInterval);
     clearInterval(qrCountdownInterval);
 }
@@ -209,17 +251,33 @@ function generateQRCode() {
     if (!qrcodeDiv) return;
     qrcodeDiv.innerHTML = '';
     
-    // Create a JOIN URL that works for both index and dashboard
-    const joinURL = `${window.location.origin}${window.location.pathname}?join=${currentSession}`;
+    // Create a JOIN URL that always points to dashboard.html for the connector
+    const joinURL = `${window.location.origin}/dashboard.html?join=${currentSession}`;
+
+    // Check if QRCode is loaded
+    if (typeof QRCode === 'undefined') {
+        console.error('QRCode library not loaded!');
+        qrcodeDiv.innerHTML = `<div style="color:red; font-size:0.8rem; padding:20px;">QR Library Error. Use Code: <strong>${currentSession}</strong></div>`;
+        return;
+    }
 
     qrInstance = new QRCode(qrcodeDiv, {
         text: joinURL,
-        width: 250,
-        height: 250,
-        colorDark: "#353535",
+        width: 220,
+        height: 220,
+        colorDark: "#3A86FF",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
     });
+
+    // Add session ID text below for convenience
+    const idText = document.createElement('div');
+    idText.style.marginTop = '15px';
+    idText.style.fontSize = '0.9rem';
+    idText.style.fontWeight = 'bold';
+    idText.style.color = 'var(--primary)';
+    idText.innerHTML = `CODE: <span style="font-family: monospace; letter-spacing: 1px;">${currentSession}</span>`;
+    qrcodeDiv.appendChild(idText);
     
     secondsRemaining = 10;
     const countdownEl = document.getElementById('refreshCountdown');
@@ -234,24 +292,60 @@ async function checkAutoJoin() {
     if (joinId) {
         console.log('Auto-joining session:', joinId);
         
-        const res = await fetch('http://localhost:5000/join-session', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sessionId: joinId })
-        });
-        
-        const data = await res.json();
-        if (data.success) {
-            currentSession = joinId;
-            startChat();
-            // Clean up URL without reload
-            const newURL = window.location.origin + window.location.pathname;
-            window.history.replaceState({}, document.title, newURL);
-        } else {
-            console.error('Failed to auto-join: Invalid session ID');
-            alert('This session is no longer active.');
+        // If we don't have an identity, prompt for one
+        if (!localStorage.getItem('shadowUserName')) {
+            showIdentityPrompt(joinId);
+            return;
         }
+
+        performJoin(joinId);
     }
+}
+
+async function performJoin(joinId) {
+    const res = await fetch('/join-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId: joinId })
+    });
+    
+    const data = await res.json();
+    if (data.success) {
+        currentSession = joinId;
+        startChat();
+        // Clean up URL without reload
+        const newURL = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, newURL);
+        addSystemMessage('You joined the shadow room');
+    } else {
+        console.error('Failed to auto-join: Invalid session ID');
+        alert('This session is no longer active.');
+    }
+}
+
+function showIdentityPrompt(joinId) {
+    const modal = document.getElementById('identityModal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    
+    // Store joinId temporarily
+    window.pendingJoinId = joinId;
+}
+
+function submitIdentity() {
+    const name = document.getElementById('identityName').value.trim();
+    if (!name) return alert('Please enter a name to connect');
+    
+    localStorage.setItem('shadowUserName', name);
+    localStorage.setItem('shadowUserEmail', name.toLowerCase().replace(/\s+/g, '.') + '@shadow.chat');
+    
+    document.getElementById('identityModal').style.display = 'none';
+    
+    // Update UI if on dashboard
+    const displayUser = document.getElementById('displayUserName');
+    if (displayUser) displayUser.textContent = name;
+    
+    performJoin(window.pendingJoinId);
 }
 
 function startQRRefreshTimer() {

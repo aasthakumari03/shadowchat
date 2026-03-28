@@ -16,8 +16,10 @@ const io = new Server(server, {
 let sessions = {};
 
 io.on('connection', (socket) => {
-  socket.on('join-session', (sessionId) => {
+  socket.on('join-session', ({ sessionId, userName }) => {
     socket.join(sessionId);
+    // Notify others in the room
+    socket.to(sessionId).emit('user-joined', { userName });
   });
 
   socket.on('send-message', ({ sessionId, message }) => {
