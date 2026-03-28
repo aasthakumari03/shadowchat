@@ -80,9 +80,9 @@
         }
 
         .glass-card:hover {
-            border-color: rgba(0, 109, 119, 0.2);
+            border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
         /* Stats Grid */
@@ -133,7 +133,7 @@
             font-weight: 800;
             font-family: var(--font-outfit);
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--accent-2), var(--primary));
+            background: linear-gradient(135deg, var(--text-main), var(--primary));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -200,12 +200,11 @@
     </style>
 </head>
 <body>
-    <!-- Background Effects -->
-    <div class="bg-vibe-container">
-        <div class="vibe-element bubble-1"></div>
-        <div class="vibe-element bubble-2"></div>
-        <div class="vibe-element emoji" style="--d: 50s; --delay: 0s; --x: 10%;">💬</div>
-        <div class="vibe-element emoji" style="--d: 60s; --delay: 5s; --x: 80%;">🔒</div>
+    <!-- Background depth with animated glow blobs -->
+    <div class="bg-depth-container">
+        <div class="glow-blob blob-1"></div>
+        <div class="glow-blob blob-2"></div>
+        <div class="glow-blob blob-3"></div>
     </div>
 
     <!-- Sidebar -->
