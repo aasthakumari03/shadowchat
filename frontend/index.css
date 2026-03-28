@@ -116,19 +116,37 @@ body::before {
     white-space: nowrap;
 }
 
-/* First letter 's' is always visible */
+/* First letter 'S' is always visible and looks like a logo box */
 .nav-brand-text span:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 1;
-    max-width: 50px;
+    max-width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    background: var(--primary-glow);
+    box-shadow: 0 0 20px var(--primary-glow), inset 0 0 10px var(--primary-glow);
     transform: translateX(0);
-    margin-right: 4px;
+    margin-right: 12px;
+    font-size: 1.8rem;
+    color: var(--primary);
+    -webkit-text-fill-color: initial;
+    background-clip: initial;
+}
+
+.nav-left:hover .nav-brand-text span:first-child {
+    border-color: var(--secondary);
+    box-shadow: 0 0 30px var(--primary-glow);
 }
 
 .nav-left:hover .nav-brand-text span {
     opacity: 1;
-    max-width: 50px;
+    max-width: 100px; /* Increased for better expansion */
     transform: translateX(0);
-    margin-right: 2px;
+    margin-right: 4px;
 }
 
 /* Staggered animation */
@@ -570,17 +588,18 @@ h1.brand-name {
 }
 
 .bottom-credit {
-    position: absolute;
-    bottom: 30px;
+    position: fixed;
+    bottom: 25px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.2);
-    letter-spacing: 2px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 3px;
     font-family: var(--font-outfit);
     pointer-events: none;
     text-transform: uppercase;
     white-space: nowrap;
+    z-index: 1001;
 }
 
 /* ── Professional Success Popup ── */
