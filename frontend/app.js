@@ -246,43 +246,61 @@ function closeQRModal() {
     clearInterval(qrCountdownInterval);
 }
 
-function generateQRCode() {
+async function generateQRCode() {
     const qrcodeDiv = document.getElementById('qrcode');
     if (!qrcodeDiv) return;
-    qrcodeDiv.innerHTML = '';
     
-    // Create a JOIN URL that always points to dashboard.html for the connector
-    const joinURL = `${window.location.origin}/dashboard.html?join=${currentSession}`;
+    try {
+        // Fetch a fresh rotating token from the backend
+        const res = await fetch('/refresh-token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId: currentSession })
+        });
+        const data = await res.json();
+        
+        if (data.error) throw new Error(data.error);
+        const token = data.token;
 
-    // Check if QRCode is loaded
-    if (typeof QRCode === 'undefined') {
-        console.error('QRCode library not loaded!');
-        qrcodeDiv.innerHTML = `<div style="color:red; font-size:0.8rem; padding:20px;">QR Library Error. Use Code: <strong>${currentSession}</strong></div>`;
-        return;
+        qrcodeDiv.innerHTML = '';
+        
+        // Create a JOIN URL that uses the rotating token
+        const joinURL = `${window.location.origin}/dashboard.html?join=${token}`;
+
+        // Check if QRCode is loaded
+        if (typeof QRCode === 'undefined') {
+            console.error('QRCode library not loaded!');
+            qrcodeDiv.innerHTML = `<div style="color:red; font-size:0.8rem; padding:20px;">QR Library Error. Use Code: <strong>${currentSession}</strong></div>`;
+            return;
+        }
+
+        qrInstance = new QRCode(qrcodeDiv, {
+            text: joinURL,
+            width: 220,
+            height: 220,
+            colorDark: "#3A86FF",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // Add session ID text below for convenience (not the token)
+        const idText = document.createElement('div');
+        idText.style.marginTop = '15px';
+        idText.style.fontSize = '0.9rem';
+        idText.style.fontWeight = 'bold';
+        idText.style.color = 'var(--primary)';
+        idText.innerHTML = `SESSION ID: <span style="font-family: monospace; letter-spacing: 1px;">${currentSession}</span>`;
+        qrcodeDiv.appendChild(idText);
+        
+        secondsRemaining = 10;
+        const countdownEl = document.getElementById('refreshCountdown');
+        if (countdownEl) countdownEl.textContent = secondsRemaining;
+    } catch (err) {
+        console.error('Failed to generate rotating QR:', err);
+        qrcodeDiv.innerHTML = `<div style="color:red; font-size:0.8rem; padding:20px;">Connection Error. Refreshing...</div>`;
     }
-
-    qrInstance = new QRCode(qrcodeDiv, {
-        text: joinURL,
-        width: 220,
-        height: 220,
-        colorDark: "#3A86FF",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-    });
-
-    // Add session ID text below for convenience
-    const idText = document.createElement('div');
-    idText.style.marginTop = '15px';
-    idText.style.fontSize = '0.9rem';
-    idText.style.fontWeight = 'bold';
-    idText.style.color = 'var(--primary)';
-    idText.innerHTML = `CODE: <span style="font-family: monospace; letter-spacing: 1px;">${currentSession}</span>`;
-    qrcodeDiv.appendChild(idText);
-    
-    secondsRemaining = 10;
-    const countdownEl = document.getElementById('refreshCountdown');
-    if (countdownEl) countdownEl.textContent = secondsRemaining;
 }
+
 
 // Auto-join logic for scanned QR links
 async function checkAutoJoin() {
@@ -303,25 +321,29 @@ async function checkAutoJoin() {
 }
 
 async function performJoin(joinId) {
+    // joinId could be a sessionId (8 chars) or a token (10 chars)
+    const isToken = joinId.length > 8;
+    
     const res = await fetch('/join-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId: joinId })
+        body: JSON.stringify(isToken ? { token: joinId } : { sessionId: joinId })
     });
     
     const data = await res.json();
     if (data.success) {
-        currentSession = joinId;
+        currentSession = data.sessionId || joinId;
         startChat();
         // Clean up URL without reload
         const newURL = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, newURL);
         addSystemMessage('You joined the shadow room');
     } else {
-        console.error('Failed to auto-join: Invalid session ID');
-        alert('This session is no longer active.');
+        console.error('Failed to auto-join:', data.error || 'Invalid session ID');
+        alert(data.error || 'This session is no longer active.');
     }
 }
+
 
 function showIdentityPrompt(joinId) {
     const modal = document.getElementById('identityModal');

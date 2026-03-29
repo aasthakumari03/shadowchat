@@ -197,6 +197,19 @@
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(15px);
         }
+
+        /* Pulse Animation for Profile Logo */
+        @keyframes profilePulse {
+            0% { box-shadow: 0 0 0 0 rgba(58, 134, 255, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(58, 134, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(58, 134, 255, 0); }
+        }
+
+        .nav-profile-logo.active-qr {
+            animation: profilePulse 2s infinite;
+            border-color: #ffffff;
+            background: var(--primary);
+        }
     </style>
 </head>
 <body>
