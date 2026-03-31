@@ -1,5 +1,7 @@
 const socket = io('http://localhost:5000');
 let currentSession = null;
+let currentPin = null;
+
 
 function toggleQR() {
   const box = document.getElementById('qrBox');
@@ -68,6 +70,8 @@ async function createSession() {
     const data = await res.json();
 
     currentSession = data.sessionId;
+    currentPin = data.pin;
+
     
     // Update UI elements if they exist
     const sessionDoc = document.getElementById('sessionId');
@@ -283,13 +287,13 @@ async function generateQRCode() {
             correctLevel: QRCode.CorrectLevel.H
         });
 
-        // Add session ID text below for convenience (not the token)
+        // Add PIN text below for convenience
         const idText = document.createElement('div');
         idText.style.marginTop = '15px';
-        idText.style.fontSize = '0.9rem';
-        idText.style.fontWeight = 'bold';
+        idText.style.fontSize = '1.1rem';
+        idText.style.fontWeight = '800';
         idText.style.color = 'var(--primary)';
-        idText.innerHTML = `SESSION ID: <span style="font-family: monospace; letter-spacing: 1px;">${currentSession}</span>`;
+        idText.innerHTML = `ROOM PIN: <span style="font-family: monospace; letter-spacing: 2px;">${currentPin}</span><br><span style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">Session: ${currentSession}</span>`;
         qrcodeDiv.appendChild(idText);
         
         secondsRemaining = 10;
@@ -384,3 +388,47 @@ function startQRRefreshTimer() {
         document.getElementById('refreshCountdown').textContent = secondsRemaining;
     }, 1000);
 }
+
+// 4-Digit PIN Joining Logic
+function openJoinPinModal() {
+    const modal = document.getElementById('joinPinModal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeJoinPinModal() {
+    const modal = document.getElementById('joinPinModal');
+    if (modal) modal.style.display = 'none';
+    const input = document.getElementById('joinPinInput');
+    if (input) input.value = '';
+}
+
+async function submitJoinPin() {
+    const input = document.getElementById('joinPinInput');
+    if (!input) return;
+    const pin = input.value.trim();
+    
+    if (pin.length !== 4) return alert('Please enter a valid 4-digit PIN');
+    
+    const res = await fetch('/join-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin })
+    });
+    
+    const data = await res.json();
+    if (data.success) {
+        closeJoinPinModal();
+        let joinId = data.sessionId;
+        
+        // If we don't have an identity, prompt for one
+        if (!localStorage.getItem('shadowUserName')) {
+            showIdentityPrompt(joinId);
+            return;
+        }
+
+        performJoin(joinId);
+    } else {
+        alert(data.error || 'Invalid Room PIN');
+    }
+}
+

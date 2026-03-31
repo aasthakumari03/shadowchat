@@ -15,6 +15,7 @@ const io = new Server(server, {
 
 let sessions = {};
 let joinTokens = {}; // token -> sessionId
+let sessionPins = {}; // 4-digit pin -> sessionId
 
 
 io.on('connection', (socket) => {
@@ -32,7 +33,16 @@ io.on('connection', (socket) => {
 app.post('/create-session', (req, res) => {
   const sessionId = Math.random().toString(36).substring(2, 10).toUpperCase();
   sessions[sessionId] = { active: true };
-  res.json({ sessionId });
+
+  // Generate a unique 4-digit PIN
+  let pin;
+  do {
+    pin = Math.floor(1000 + Math.random() * 9000).toString();
+  } while (sessionPins[pin]);
+  
+  sessionPins[pin] = sessionId;
+
+  res.json({ sessionId, pin });
 });
 
 app.post('/refresh-token', (req, res) => {
@@ -48,8 +58,16 @@ app.post('/refresh-token', (req, res) => {
 
 
 app.post('/join-session', (req, res) => {
-  const { sessionId, token } = req.body;
+  const { sessionId, token, pin } = req.body;
   
+  // If joining via PIN
+  if (pin) {
+    if (sessionPins[pin]) {
+      return res.json({ success: true, sessionId: sessionPins[pin] });
+    }
+    return res.json({ success: false, error: 'Invalid or expired Room PIN' });
+  }
+
   // If joining via token
   if (token) {
     const tokenData = joinTokens[token];
@@ -71,6 +89,10 @@ app.post('/end-session', (req, res) => {
   // Clean up tokens
   Object.keys(joinTokens).forEach(t => {
     if (joinTokens[t].sessionId === sessionId) delete joinTokens[t];
+  });
+  // Clean up PINs
+  Object.keys(sessionPins).forEach(p => {
+    if (sessionPins[p] === sessionId) delete sessionPins[p];
   });
   res.json({ success: true });
 });

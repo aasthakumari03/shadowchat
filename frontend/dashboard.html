@@ -266,6 +266,10 @@
 
         <div class="nav-right">
             <span class="nav-brand-text" style="font-size: 1.4rem; margin-right: 20px;">shadowchat</span>
+            <button class="button-primary get-started-btn" onclick="openJoinPinModal()" style="margin-right: 15px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                <span>Join Room</span>
+            </button>
             <button class="button-ghost" onclick="window.location.href='index.html'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                 <span>Home</span>
@@ -343,6 +347,21 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 4s linear infinite;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
                 <span>ROTATING KEY: <span id="refreshCountdown">10</span>s</span>
             </div>
+        </div>
+    </div>
+
+    <!-- Join PIN Modal -->
+    <div id="joinPinModal" class="modal-overlay">
+        <div class="identity-card shining-border">
+            <button class="close-modal" onclick="closeJoinPinModal()">&#x2715;</button>
+            <h2 class="identity-title">Join a Room</h2>
+            <p class="identity-desc">Enter the 4-digit PIN to instantly connect to a secure session.</p>
+            
+            <div class="form-group" style="text-align: center;">
+                <input type="text" id="joinPinInput" placeholder="1234" maxlength="4" style="font-size: 2rem; letter-spacing: 8px; text-align: center; font-family: monospace; font-weight: 800; padding: 15px;" class="input-field" onkeypress="if(event.key === 'Enter') submitJoinPin()" />
+            </div>
+            
+            <button class="button-primary" onclick="submitJoinPin()" style="width: 100%; margin-top: 1rem;">Connect</button>
         </div>
     </div>
 
